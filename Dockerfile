@@ -1,5 +1,5 @@
 # Base image dari Node.js versi 21
-FROM node:21
+FROM node:14
 
 # Tentukan direktori kerja
 WORKDIR /usr/src/app

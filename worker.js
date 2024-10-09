@@ -1,16 +1,17 @@
-// worker.js
 const { parentPort } = require('worker_threads');
 
-// Simulasi pekerjaan berat, seperti perhitungan atau pemrosesan data
-function doHeavyWork() {
-    let result = '';
-    for (let i = 0; i < 10; i++) {
-        // Simulasi waktu proses dengan delay
-        result += `Pekerjaan berat ke-${i + 1}\n`;
-    }
-    return result;
+// Fungsi untuk mensimulasikan memasak pesanan
+function masakPesanan(namaPesanan, waktuMasak) {
+    return new Promise((resolve) => {
+        setTimeout(() => {
+            resolve(`Pesanan selesai: ${namaPesanan}`);
+        }, waktuMasak * 1000);  // waktu memasak dalam detik
+    });
 }
 
-// Kirim hasil pekerjaan kembali ke thread utama
-const output = doHeavyWork();
-parentPort.postMessage(output);
+// Menerima pesan dari thread utama
+parentPort.on('message', async (pesanan) => {
+    console.log(`Koki mulai memasak: ${pesanan.namaPesanan}`);
+    const hasil = await masakPesanan(pesanan.namaPesanan, pesanan.waktuMasak);
+    parentPort.postMessage(hasil);  // Kirim hasil kembali ke thread utama
+});

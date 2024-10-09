@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulasi Pesanan</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+        h1 {
+            margin-bottom: 20px;
+        }
+        table {
+            width: 100%;
+            max-width: 800px;
+            margin: 0 auto;
+            border-collapse: collapse;
+            background-color: #fff;
+            margin-bottom: 20px; /* Tambahkan margin bawah untuk memisahkan tabel */
+        }
+        th, td {
+            padding: 12px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        .status {
+            padding: 8px;
+            color: #fff;
+            border-radius: 4px;
+        }
+        .pending { background-color: #f0ad4e; }
+        .cooking { background-color: #5bc0de; }
+        .done { background-color: #5cb85c; }
+    </style>
+</head>
+<body>
+    <h1>Simulasi Pesanan Koki menggunakan Thread | Tugas-3 Cloud Computing IF-46-10</h1>
+    
+    <!-- Tabel Anggota Kelompok -->
+    <h2>Anggota Kelompok</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Nama</th>
+                <th>NIM</th>
+                <th>PIC</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Yustinus Dwi Adyra</td>
+                <td>1301223129</td>
+                <td>NO 2C</td>
+            </tr>
+            <tr>
+                <td>Khairani Razita Putri</td>
+                <td>1301223373</td>
+                <td>NO 2B</td>
+            </tr>
+            <tr>
+                <td>Chatelia Dyah Prameswari</td>
+                <td>1301223320</td>
+                <td>NO 2A</td>
+            </tr>
+            <tr>
+                <td>Azrian Rifqi Radhitya</td>
+                <td>1301223292</td>
+                <td>NO 1</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Pesanan</th>
+                <th>Waktu Masak (detik)</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody id="orders">
+            <!-- Pesanan akan ditampilkan di sini -->
+        </tbody>
+    </table>
+
+    <script>
+        const orders = [
+            { namaPesanan: 'Spaghetti', waktuMasak: 5 },
+            { namaPesanan: 'Pizza', waktuMasak: 7 },
+            { namaPesanan: 'Burger', waktuMasak: 3 },
+            { namaPesanan: 'Kentang Goreng', waktuMasak: 3 } // Pesanan baru ditambahkan
+        ];
+
+        const ordersTable = document.getElementById('orders');
+
+        // Fungsi untuk menambahkan pesanan ke tabel
+        function addOrderToTable(order, status) {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${order.namaPesanan}</td>
+                <td>${order.waktuMasak}</td>
+                <td><span class="status ${status}">${status.charAt(0).toUpperCase() + status.slice(1)}</span></td>
+            `;
+            ordersTable.appendChild(row);
+            return row;
+        }
+
+        // Fungsi untuk memperbarui status pesanan di tabel
+        function updateOrderStatus(row, status) {
+            const statusCell = row.querySelector('.status');
+            statusCell.textContent = status.charAt(0).toUpperCase() + status.slice(1);
+            statusCell.className = `status ${status}`;
+        }
+
+        // Simulasi proses pesanan
+        orders.forEach((order) => {
+            const row = addOrderToTable(order, 'pending');
+            
+            // Mulai memasak
+            setTimeout(() => {
+                updateOrderStatus(row, 'cooking');
+            }, 0); // Status dimulai tanpa penundaan
+
+            // Selesaikan memasak
+            setTimeout(() => {
+                updateOrderStatus(row, 'done');
+            }, order.waktuMasak * 1000); // Menyelesaikan setelah waktu masak
+        });
+    </script>
+    <h3>Muat ulang halaman ini untuk memulai kembali thread</h3>
+</body>
+</html>
